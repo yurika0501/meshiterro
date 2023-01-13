@@ -1,9 +1,10 @@
 class PostImage < ApplicationRecord
 
-  has_one_attached :image
-
   #userモデルとの関連付け
   belongs_to :user
+  has_one_attached :image
+  has_many :post_comments, dependent: :destroy
+  has_many :favorites, dependent: :destroy
 
   def get_image
     unless image.attached?
@@ -13,5 +14,8 @@ class PostImage < ApplicationRecord
     image
   end
 
+  def favorited_by?(user)
+    favorites.exists?(user_id: user.id)
+  end
 
 end

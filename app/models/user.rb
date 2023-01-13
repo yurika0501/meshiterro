@@ -4,11 +4,12 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
 
+  has_one_attached :profile_image
   #ユーザーはたくさん投稿ができる記述とユーザーが垢消ししたら投稿も一緒に消える記述
   has_many :post_images, dependent: :destroy
-
-
-  has_one_attached :profile_image
+  # 本投稿を消したらコメントもまとめて削除される記述
+  has_many :post_comments, dependent: :destroy
+  has_many :favorites, dependent: :destroy
 
 
   def get_profile_image(width, height)
@@ -19,4 +20,3 @@ class User < ApplicationRecord
     profile_image.variant(resize_to_limit: [width, height]).processed
   end
 end
-
