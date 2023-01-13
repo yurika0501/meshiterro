@@ -1,10 +1,15 @@
 class PostImage < ApplicationRecord
 
+  has_one_attached :image
   #userモデルとの関連付け
   belongs_to :user
-  has_one_attached :image
-  has_many :post_comments, dependent: :destroy
   has_many :favorites, dependent: :destroy
+  has_many :post_comments, dependent: :destroy
+  
+  #shop_nameが存在しているかを確認するバリデーション
+  validates :shop_name, presence: true
+  #imageが存在しているかを確認するバリデーション
+  validates :image, presence: true
 
   def get_image
     unless image.attached?
